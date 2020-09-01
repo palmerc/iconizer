@@ -1,10 +1,16 @@
+#!/usr/bin/env python3
+
+import gi
 import cairo
-import rsvg
+
+gi.require_version('Rsvg', '2.0')
+
+from gi.repository import Rsvg
 import json
 import os
 
 def svg_to_png(svg_path, png_path, width, height):
-    svg = rsvg.Handle(svg_path)
+    svg = Rsvg.Handle().new_from_file('/Users/palmerc/Downloads/WSHorse.svg')
     unscaled_width = svg.props.width
     unscaled_height = svg.props.height
 
@@ -19,7 +25,7 @@ def svg_to_png(svg_path, png_path, width, height):
     svg_surface.finish()
 
 
-svg_path = '/Users/palmerc/Desktop/promon_shield.svg'
+svg_path = '/Users/palmerc/Downloads/WSHorse.svg'
 output_path = '/Users/palmerc/Desktop'
 output_json_path = os.path.join(output_path, 'Contents.json')
 json_file = open('Assets.xcassets/AppIcon.appiconset/Contents.json')
@@ -38,6 +44,7 @@ for image in data['images']:
     png_width = float(width) * float(scale)
     png_height = float(height) * float(scale)
     png_path = os.path.join(output_path, png_filename)
+    print('{} {}'.format(png_width, png_height))
     svg_to_png(svg_path, png_path, png_width, png_height)
     image['filename'] = png_filename
 
